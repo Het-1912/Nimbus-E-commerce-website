@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nimbus</title>
+
+    <!-- Tailwind CSS v4 (browser build) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body class="m-0 bg-[#3876ba] text-white antialiased">
+    <!-- HOME -->
+    <div id="view-home" class="view-in">
+<div
+      class="relative h-dvh min-h-[40rem] w-full overflow-hidden bg-linear-to-t from-[#8cbfe8] to-[#3876ba]"
+    >
+      <!-- clouds drift left to right; the sky fades in softly on mount -->
+      <div class="sky-fade absolute inset-0">
+        <!-- the shader renders at half size and upscales 2x -->
+        <div class="absolute h-1/2 w-1/2 origin-top-left scale-200">
+          <div
+            id="cloud-shader"
+            class="absolute inset-0 h-full min-h-80 w-full overflow-hidden"
+          ></div>
+        </div>
+      </div>
+
+      <div data-nav-slot="home"></div>
+
+      <!-- hero content, left aligned with the navbar -->
+      <div
+        class="relative z-20 mx-auto mt-16 w-full max-w-7xl px-4 md:mt-24 md:px-8"
+      >
+        <div class="max-w-2xl">
+          <h1
+            class="text-4xl font-bold tracking-tight text-white [text-shadow:0_2px_12px_rgba(15,42,67,0.35)] md:text-6xl"
+          >
+            Everything you love, delivered to your door
+          </h1>
+          <p class="mt-4 max-w-xl text-base text-balance text-white/85 md:text-lg">
+            Browse thousands of products, catch price drops as they happen, and
+            check out in under a minute. Free shipping, easy returns, no hidden
+            fees, just great finds.
+          </p>
+          <div class="mt-8 flex flex-wrap items-center gap-4">
+            <a
+              href="#shop" data-nav="shop"
+              class="rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition hover:bg-white/90"
+            >
+              Shop now
+            </a>
+            <a
+              href="#collections" data-nav="collections"
+              class="rounded-full px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+            >
+              Browse collections
+            </a>
+          </div>
+
+          <!-- social proof -->
+          <div class="mt-8 flex items-center gap-3">
+            <div class="flex -space-x-2.5">
+              <img src="https://assets.aceternity.com/avatars/1.webp" alt="Shopper 1" width="32" height="32" class="h-8 w-8 rounded-full border-2 border-white/80 object-cover" />
+              <img src="https://assets.aceternity.com/avatars/2.webp" alt="Shopper 2" width="32" height="32" class="h-8 w-8 rounded-full border-2 border-white/80 object-cover" />
+              <img src="https://assets.aceternity.com/avatars/3.webp" alt="Shopper 3" width="32" height="32" class="h-8 w-8 rounded-full border-2 border-white/80 object-cover" />
+              <img src="https://assets.aceternity.com/avatars/4.webp" alt="Shopper 4" width="32" height="32" class="h-8 w-8 rounded-full border-2 border-white/80 object-cover" />
+              <img src="https://assets.aceternity.com/avatars/5.webp" alt="Shopper 5" width="32" height="32" class="h-8 w-8 rounded-full border-2 border-white/80 object-cover" />
+            </div>
+            <p class="text-sm text-white/85">
+              <span class="font-semibold text-white">Manu</span> and 5 others
+              saved 30% on their last order
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- wing view with a gentle bob -->
+      <div
+        class="wing-bob pointer-events-none absolute -bottom-6 left-0 z-10 w-[85%] md:w-[70%]"
+      >
+        <img
+          src="https://assets.aceternity.com/components/plane-wing.png"
+          alt="Airplane wing above the clouds"
+          class="h-auto w-full object-cover"
+        />
+      </div>
+    </div>
+    </div>
+
+    <div id="view-shop" hidden class="min-h-dvh bg-linear-to-t from-[#8cbfe8] to-[#3876ba] bg-fixed">
+      <div data-nav-slot="shop"></div>
+      <main class="relative z-20 mx-auto w-full max-w-7xl px-4 pb-24 md:px-8">
+      <!-- page header -->
+      <header class="page-in mt-12 max-w-2xl md:mt-16">
+        <h1
+          class="text-4xl font-bold tracking-tight text-white [text-shadow:0_2px_12px_rgba(15,42,67,0.35)] md:text-6xl"
+        >
+          Shop everything
+        </h1>
+        <p class="mt-4 max-w-xl text-base text-balance text-white/85 md:text-lg">
+          Every product in one place. Add what you like, check out in under a
+          minute.
+        </p>
+      </header>
+
+      <!-- toolbar: search, categories, sort -->
+      <section
+        class="page-in mt-10 flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
+        style="animation-delay: 120ms"
+      >
+        <div id="category-chips" class="flex flex-wrap gap-2"></div>
+
+        <div class="flex flex-col gap-3 sm:flex-row">
+          <input
+            id="search"
+            type="search"
+            placeholder="Search products"
+            aria-label="Search products"
+            class="w-full rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm text-white placeholder-white/70 backdrop-blur transition outline-none focus:border-white focus:bg-white/20 sm:w-56"
+          />
+          <select
+            id="sort"
+            aria-label="Sort products"
+            class="rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm text-white backdrop-blur transition outline-none focus:border-white [&>option]:text-black"
+          >
+            <option value="featured">Featured</option>
+            <option value="price-asc">Price: low to high</option>
+            <option value="price-desc">Price: high to low</option>
+            <option value="name">Name A–Z</option>
+          </select>
+        </div>
+      </section>
+
+      <p id="result-count" class="mt-6 text-sm text-white/80"></p>
+
+      <!-- product grid (filled by shop.js) -->
+      <section
+        id="product-grid"
+        class="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+      ></section>
+
+      <!-- empty state -->
+      <div id="empty-state" class="hidden py-24 text-center">
+        <p class="text-xl font-semibold">No products found</p>
+        <p class="mt-2 text-white/80">Try a different search or category.</p>
+        <button
+          id="reset-filters"
+          type="button"
+          class="mt-6 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition hover:bg-white/90"
+        >
+          Clear filters
+        </button>
+      </div>
+    </main>
+    </div>
+
+    <div id="view-new" hidden class="min-h-dvh bg-linear-to-t from-[#8cbfe8] to-[#3876ba] bg-fixed">
+      <div data-nav-slot="new"></div>
+      <main class="relative z-20 mx-auto w-full max-w-7xl px-4 pb-24 md:px-8">
+        <header class="page-in mt-12 max-w-2xl md:mt-16">
+          <h1 class="text-4xl font-bold tracking-tight text-white [text-shadow:0_2px_12px_rgba(15,42,67,0.35)] md:text-6xl">New arrivals</h1>
+          <p class="mt-4 max-w-xl text-base text-balance text-white/85 md:text-lg">Fresh in this season. Be the first to get them.</p>
+        </header>
+        <p id="new-count" class="mt-8 text-sm text-white/80"></p>
+        <section id="new-grid" class="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"></section>
+      </main>
+    </div>
+
+    <div id="view-sale" hidden class="min-h-dvh bg-linear-to-t from-[#8cbfe8] to-[#3876ba] bg-fixed">
+      <div data-nav-slot="sale"></div>
+      <main class="relative z-20 mx-auto w-full max-w-7xl px-4 pb-24 md:px-8">
+        <header class="page-in mt-12 max-w-2xl md:mt-16">
+          <h1 class="text-4xl font-bold tracking-tight text-white [text-shadow:0_2px_12px_rgba(15,42,67,0.35)] md:text-6xl">Sale</h1>
+          <p class="mt-4 max-w-xl text-base text-balance text-white/85 md:text-lg">Great products at lower prices while they last.</p><span id="sale-banner" class="mt-5 inline-block rounded-full bg-white px-4 py-2 text-sm font-semibold text-black"></span>
+        </header>
+        <p id="sale-count" class="mt-8 text-sm text-white/80"></p>
+        <section id="sale-grid" class="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"></section>
+      </main>
+    </div>
+
+    <div id="view-collections" hidden class="min-h-dvh bg-linear-to-t from-[#8cbfe8] to-[#3876ba] bg-fixed">
+      <div data-nav-slot="collections"></div>
+      <main class="relative z-20 mx-auto w-full max-w-7xl px-4 pb-24 md:px-8">
+        <header class="page-in mt-12 max-w-2xl md:mt-16">
+          <h1 class="text-4xl font-bold tracking-tight text-white [text-shadow:0_2px_12px_rgba(15,42,67,0.35)] md:text-6xl">Collections</h1>
+          <p class="mt-4 max-w-xl text-base text-balance text-white/85 md:text-lg">Pick a collection and start browsing.</p>
+        </header>
+        <section id="collections-grid" class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2"></section>
+      </main>
+    </div>
+
+    <div id="view-support" hidden class="min-h-dvh bg-linear-to-t from-[#8cbfe8] to-[#3876ba] bg-fixed">
+      <div data-nav-slot="support"></div>
+      <main class="relative z-20 mx-auto w-full max-w-7xl px-4 pb-24 md:px-8">
+        <header class="page-in mt-12 max-w-2xl md:mt-16">
+          <h1 class="text-4xl font-bold tracking-tight text-white [text-shadow:0_2px_12px_rgba(15,42,67,0.35)] md:text-6xl">Support</h1>
+          <p class="mt-4 max-w-xl text-base text-balance text-white/85 md:text-lg">Find quick answers or send us a message. We are happy to help.</p>
+        </header>
+        <section class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div class="rounded-3xl bg-white/10 p-6 backdrop-blur">
+            <h3 class="text-base font-semibold">Shipping</h3>
+            <p class="mt-1 text-sm text-white/85">Standard delivery in 3 to 5 business days.</p>
+          </div>
+<div class="rounded-3xl bg-white/10 p-6 backdrop-blur">
+            <h3 class="text-base font-semibold">Returns</h3>
+            <p class="mt-1 text-sm text-white/85">30 day returns on unused items.</p>
+          </div>
+<div class="rounded-3xl bg-white/10 p-6 backdrop-blur">
+            <h3 class="text-base font-semibold">Order help</h3>
+            <p class="mt-1 text-sm text-white/85">Track, change or cancel an order.</p>
+          </div>
+        </section>
+
+        <div class="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-2">
+          <section>
+            <h2 class="text-2xl font-bold">Frequently asked questions</h2>
+            <div class="mt-5 flex flex-col gap-3">
+          <details class="faq rounded-2xl bg-white text-black">
+            <summary class="flex items-center justify-between gap-4 px-6 py-4 text-sm font-semibold">How long does shipping take?<span class="chev text-xl leading-none">+</span></summary>
+            <p class="faq-body px-6 pb-5 text-sm text-black/70">Most orders arrive in 3 to 5 business days. You will get a tracking link as soon as your order ships.</p>
+          </details>
+<details class="faq rounded-2xl bg-white text-black">
+            <summary class="flex items-center justify-between gap-4 px-6 py-4 text-sm font-semibold">What is your return policy?<span class="chev text-xl leading-none">+</span></summary>
+            <p class="faq-body px-6 pb-5 text-sm text-black/70">You can return unused items within 30 days of delivery for a full refund. Start a return from the contact form below.</p>
+          </details>
+<details class="faq rounded-2xl bg-white text-black">
+            <summary class="flex items-center justify-between gap-4 px-6 py-4 text-sm font-semibold">How do I track my order?<span class="chev text-xl leading-none">+</span></summary>
+            <p class="faq-body px-6 pb-5 text-sm text-black/70">Use the tracking link in your shipping confirmation email, or contact us with your order number.</p>
+          </details>
+<details class="faq rounded-2xl bg-white text-black">
+            <summary class="flex items-center justify-between gap-4 px-6 py-4 text-sm font-semibold">Can I change or cancel my order?<span class="chev text-xl leading-none">+</span></summary>
+            <p class="faq-body px-6 pb-5 text-sm text-black/70">Yes, as long as it has not shipped. Contact us as soon as possible with your order number.</p>
+          </details>
+<details class="faq rounded-2xl bg-white text-black">
+            <summary class="flex items-center justify-between gap-4 px-6 py-4 text-sm font-semibold">Which payment methods do you accept?<span class="chev text-xl leading-none">+</span></summary>
+            <p class="faq-body px-6 pb-5 text-sm text-black/70">Major credit and debit cards and popular digital wallets are accepted at checkout.</p>
+          </details>
+<details class="faq rounded-2xl bg-white text-black">
+            <summary class="flex items-center justify-between gap-4 px-6 py-4 text-sm font-semibold">How do I contact support?<span class="chev text-xl leading-none">+</span></summary>
+            <p class="faq-body px-6 pb-5 text-sm text-black/70">Use the form on this page. We reply within one business day.</p>
+          </details>
+            </div>
+          </section>
+
+          <section id="support-box" class="rounded-3xl bg-white p-6 text-black shadow-2xl md:p-8">
+            <h2 class="text-2xl font-bold">Contact us</h2>
+            <form data-form="support" novalidate class="mt-5 flex flex-col gap-4">
+              <input name="name" type="text" placeholder="Your name" aria-label="Your name" class="w-full rounded-xl border border-black/15 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#3876ba] focus:ring-2 focus:ring-[#3876ba]/30" />
+              <input name="email" type="email" placeholder="Email address" aria-label="Email address" class="w-full rounded-xl border border-black/15 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#3876ba] focus:ring-2 focus:ring-[#3876ba]/30" />
+              <input name="order" type="text" placeholder="Order number (optional)" aria-label="Order number" class="w-full rounded-xl border border-black/15 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#3876ba] focus:ring-2 focus:ring-[#3876ba]/30" />
+              <textarea name="message" rows="5" placeholder="How can we help?" aria-label="Message" class="w-full rounded-xl border border-black/15 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#3876ba] focus:ring-2 focus:ring-[#3876ba]/30"></textarea>
+              <p data-error hidden class="rounded-xl bg-red-50 px-4 py-2 text-sm text-red-700"></p>
+              <button type="submit" class="rounded-full bg-[#3876ba] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#2f66a3]">Send message</button>
+              <p class="text-xs text-black/50">Demo form: connect an email service to receive these messages.</p>
+            </form>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <div id="view-signin" hidden class="min-h-dvh bg-linear-to-t from-[#8cbfe8] to-[#3876ba] bg-fixed">
+      <div data-nav-slot="signin"></div>
+      <main class="relative z-20 mx-auto w-full max-w-md px-4 pb-24 md:px-8">
+        <div id="auth-card" class="page-in mt-12 rounded-3xl bg-white p-8 text-black shadow-2xl md:mt-16"></div>
+      </main>
+    </div>
+
+    <!-- SHARED: cart drawer, overlay, toast -->
+    <!-- cart drawer -->
+    <div
+      id="overlay"
+      class="overlay fixed inset-0 z-40 bg-[#0f2a43]/50 backdrop-blur-sm"
+    ></div>
+
+    <aside
+      id="drawer"
+      aria-label="Shopping cart"
+      class="drawer fixed top-0 right-0 z-50 flex h-dvh w-full max-w-md flex-col bg-white text-black shadow-2xl"
+    >
+      <div class="flex items-center justify-between border-b border-black/10 px-6 py-5">
+        <h2 class="text-lg font-semibold">Your cart</h2>
+        <button
+          id="cart-close"
+          type="button"
+          aria-label="Close cart"
+          class="rounded-full px-3 py-1 text-sm font-semibold transition hover:bg-black/5"
+        >
+          Close
+        </button>
+      </div>
+
+      <div id="cart-items" class="flex-1 overflow-y-auto px-6 py-4"></div>
+
+      <div id="cart-footer" class="border-t border-black/10 px-6 py-5">
+        <div class="flex items-center justify-between text-base font-semibold">
+          <span>Subtotal</span>
+          <span id="cart-subtotal">$0.00</span>
+        </div>
+        <p class="mt-1 text-xs text-black/60">Shipping and taxes calculated at checkout.</p>
+        <button
+          id="checkout"
+          type="button"
+          class="mt-4 w-full rounded-full bg-[#3876ba] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#2f66a3] disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          Checkout
+        </button>
+      </div>
+    </aside>
+
+    <!-- toast -->
+    <div
+      id="toast"
+      role="status"
+      class="toast pointer-events-none fixed bottom-6 left-1/2 z-60 rounded-full bg-white px-5 py-3 text-sm font-semibold text-black shadow-xl"
+    ></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
