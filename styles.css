@@ -1,0 +1,187 @@
+/* Custom CSS — replaces the two `motion` animations from the React version. */
+
+/* Sky fades in softly on load (opacity 0 -> 1, 1.4s ease-out) */
+.sky-fade {
+  opacity: 0;
+  animation: sky-fade-in 1.4s ease-out forwards;
+}
+
+@keyframes sky-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Gentle in-flight bob (0 -> -12px -> 0, 8s, infinite, ease-in-out) */
+.wing-bob {
+  animation: wing-bob 8s ease-in-out infinite;
+}
+
+@keyframes wing-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+/* Canvas fills its container */
+#cloud-shader canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sky-fade,
+  .wing-bob {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+
+/* ===== Shop ===== */
+/* Custom CSS for the shop page — animations and the cart drawer. */
+
+/* Page sections fade/slide in on load */
+.page-in {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Product cards stagger in (delay is set inline per card by shop.js) */
+.product-card {
+  animation: rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(15, 42, 67, 0.25);
+}
+
+.product-card .thumb {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.product-card:hover .thumb {
+  transform: scale(1.06);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Cart drawer slides in from the right */
+.drawer {
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.drawer.open {
+  transform: translateX(0);
+}
+
+.overlay {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Cart badge pop when an item is added */
+.pop {
+  animation: pop 0.35s ease;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.35);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Toast */
+.toast {
+  opacity: 0;
+  transform: translate(-50%, 16px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* Cart line items fade in */
+.cart-line {
+  animation: rise 0.35s ease backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-in,
+  .product-card,
+  .cart-line {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .drawer,
+  .overlay,
+  .toast,
+  .product-card,
+  .product-card .thumb {
+    transition: none;
+  }
+
+  .pop {
+    animation: none;
+  }
+}
+
+
+/* ===== View switching ===== */
+[hidden] { display: none !important; }
+.view-in { animation: view-fade 0.5s ease; }
+@keyframes view-fade {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== FAQ accordion ===== */
+.faq summary { list-style: none; cursor: pointer; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq .chev { transition: transform 0.3s ease; }
+.faq[open] .chev { transform: rotate(45deg); }
+.faq[open] .faq-body { animation: rise 0.35s ease backwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .view-in, .faq[open] .faq-body { animation: none; }
+  .faq .chev { transition: none; }
+}
